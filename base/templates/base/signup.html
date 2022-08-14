@@ -1,0 +1,13 @@
+{% load static %}
+
+{% block content %}
+<form action="" method="POST">
+    {% csrf_token %}
+    {% for fields in form %}
+    {{fields.label}}
+    {{fields}}
+    {% endfor %}
+    <button type="submit">Sign up</button>
+</form>
+<p>have an account <a href="{% url 'login' %}">Login</a></p>
+{% endblock content %}

@@ -1,0 +1,7 @@
+{% load static %}
+{% block content %}
+{% if  user.is_authenticated  %}
+<h1>Hello welcome to this place have a fun time </h1>
+<a href="{% url 'logout' %}">Logout</a>
+{% endif %}
+{% endblock content %}
