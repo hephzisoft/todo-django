@@ -8,9 +8,7 @@ from django.contrib.auth import authenticate, login, logout
 
 def loginUser(request):
     if request.user.is_authenticated:
-        return redirect('home')
-    else:
-        return redirect('login')
+        return redirect(home)
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -21,7 +19,7 @@ def loginUser(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('home')
+            return redirect(home)
         else:
             messages.error(request, 'Username OR password does not exit')
 
@@ -30,7 +28,7 @@ def loginUser(request):
 
 def logoutUser(request):
     logout(request)
-    return redirect('login')
+    return redirect(login)
 
 
 def signup(request):
@@ -43,14 +41,14 @@ def signup(request):
             user.username = user.username.lower()
             user.save()
             login(request, user)
-            return redirect('home')
+            return redirect(home)
         else:
             messages.error(request, 'An error occurred during registration')
     context = {'form': form}
     return render(request, 'base/signup.html', context)
 
 
-@login_required(login_url='login')
+@login_required(login_url=signup)
 def home(request):
     context = {}
     return render(request, 'base/todo.html', context)
