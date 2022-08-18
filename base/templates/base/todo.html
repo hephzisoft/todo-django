@@ -1,7 +1,11 @@
 {% load static %}
 {% block content %}
 {% if  user.is_authenticated  %}
-<h1>Hello welcome to this place have a fun time </h1>
+{% for list in todo  %}
+<p>{{list.tag}}</p>
+<p>{{list.description}}</p>
+{% endfor %}
 <a href="{% url 'logout' %}">Logout</a>
+
 {% endif %}
 {% endblock content %}

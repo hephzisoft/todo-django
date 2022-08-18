@@ -1,5 +1,6 @@
+from ast import Pass
 from django.shortcuts import render, redirect
-from .forms import UserForm
+from .forms import UserForm, TodoForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import User, Todo
@@ -49,6 +50,21 @@ def signup(request):
 
 
 @login_required(login_url=signup)
-def home(request):
-    context = {}
+def home(request, pk):
+    user = User.objects.get(id=pk)
+    todo = Todo.objects.all()
+    context = {'todo': todo}
     return render(request, 'base/todo.html', context)
+
+
+@login_required(login_url=signup)
+def todoform(request,):
+    user = request.user
+    form = TodoForm(instance=user)
+
+    if request.method == 'POST':
+        form = TodoForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect(home, user.id)
+    return render(request, 'base/todoform.html', {'form':form})
